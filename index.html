@@ -1,66 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aditi & Abhi's Mood Connect</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Connect</title>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #fdf2f8; padding: 20px; display: flex; justify-content: center; }
-    .container { max-width: 500px; width: 100%; }
-    .card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-    h1 { color: #d63384; text-align: center; }
-    .mood-scale { display: flex; justify-content: space-around; margin: 15px 0; }
-    .mood-btn { font-size: 1.8rem; border: none; background: none; cursor: pointer; transition: 0.2s; }
-    .mood-btn:hover { transform: scale(1.3); }
-    textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; margin-top: 10px; box-sizing: border-box; }
-    select { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; }
+    body { font-family: sans-serif; display: flex; justify-content: center; padding: 20px; background: #fdf2f8; }
+    .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+    .mood-btn { font-size: 2rem; border: none; background: none; cursor: pointer; margin: 10px; }
+    select { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Hi Aditi & Abhi! ✨</h1>
-    <div class="card">
-      <p style="text-align:center">Who is logging?</p>
-      <select id="userName">
-        <option value="Aditi">Aditi</option>
-        <option value="Abhi">Abhi</option>
-      </select>
-      
-      <div class="mood-scale">
-        <button class="mood-btn" onclick="saveMood('😭')">😭</button>
-        <button class="mood-btn" onclick="saveMood('😐')">😐</button>
-        <button class="mood-btn" onclick="saveMood('😊')">😊</button>
-        <button class="mood-btn" onclick="saveMood('❤️')">❤️</button>
-      </div>
-      <textarea id="note" placeholder="Add a note..."></textarea>
+  <div class="card">
+    <h1>Mood Connect ✨</h1>
+    <select id="userName">
+      <option>Aditi</option>
+      <option>Abhi</option>
+    </select>
+    <div>
+      <button class="mood-btn" onclick="save('😊')">😊</button>
+      <button class="mood-btn" onclick="save('😭')">😭</button>
+      <button class="mood-btn" onclick="save('😐')">😐</button>
+      <button class="mood-btn" onclick="save('❤️')">❤️</button>
     </div>
   </div>
 
   <script>
-    function saveMood(emoji) {
+    function save(mood) {
       const name = document.getElementById('userName').value;
-      const note = document.getElementById('note').value;
-      
-      // PASTE YOUR SHEETY API URL BELOW
-      const webAppUrl = 'https://api.sheety.co/983d081ba07c085e25a01c9c23bb86a8/aditixabhi/sheet1';
-
-      fetch(webAppUrl, {
+      fetch('https://api.sheety.co/983d081ba07c085e25a01c9c23bb86a8/aditixabhi/sheet1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          "sheet1": {
-            "Timestamp": new Date().toLocaleString(),
-            "Name": name,
-            "Mood": emoji,
-            "Note": note
+        body: JSON.stringify({ 
+          "sheet1": { 
+            "Timestamp": new Date().toLocaleString(), 
+            "Name": name, 
+            "Mood": mood 
           }
         })
       })
       .then(response => response.json())
-      .then(json => {
-        alert("Saved for " + name + "!");
-        document.getElementById('note').value = '';
-      })
+      .then(json => alert("Saved for " + name + "!"))
       .catch(err => alert("Error: Make sure POST is enabled in Sheety."));
     }
   </script>
