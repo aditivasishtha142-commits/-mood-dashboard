@@ -7,7 +7,8 @@
   <style>
     body { font-family: sans-serif; display: flex; justify-content: center; padding: 20px; background: #fdf2f8; }
     .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
-    .mood-btn { font-size: 2rem; border: none; background: none; cursor: pointer; margin: 10px; }
+    .mood-btn { font-size: 2rem; border: none; background: none; cursor: pointer; margin: 10px; transition: 0.2s; }
+    .mood-btn:hover { transform: scale(1.3); }
     select { width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 5px; }
   </style>
 </head>
@@ -29,6 +30,7 @@
   <script>
     function save(mood) {
       const name = document.getElementById('userName').value;
+      // This is the bridge to your Google Sheet
       fetch('https://api.sheety.co/983d081ba07c085e25a01c9c23bb86a8/aditixabhi/sheet1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
